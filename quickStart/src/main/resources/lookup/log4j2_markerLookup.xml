@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %marker %L %M - %msg%xEx%n"/>
+        </Console>
+        <RandomAccessFile name="SQL_APPENDER" fileName="target/sql.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %marker %L %M - %msg%xEx%n"/>
+        </RandomAccessFile>
+        <RandomAccessFile name="PAYLOAD_APPENDER" fileName="target/payload.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %marker %L %M - %msg%xEx%n"/>
+        </RandomAccessFile>
+        <RandomAccessFile name="PERFORMANCE_APPENDER" fileName="target/performance.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %marker %L %M - %msg%xEx%n"/>
+        </RandomAccessFile>
+
+        <!--
+            日志文件路由
+            pattern:匹配marker
+            Route:指定key到指定File
+        -->
+        <Routing name="Routing">
+            <Routes pattern="$${marker:}">
+                <Route key="PERFORMANCE" ref="PERFORMANCE_APPENDER"/>
+                <Route key="PAYLOAD" ref="PAYLOAD_APPENDER"/>
+                <Route key="SQL" ref="SQL_APPENDER"/>
+            </Routes>
+        </Routing>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Routing"/>
+        </Root>
+    </Loggers>
+</Configuration>

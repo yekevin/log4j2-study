@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%m%n"/>
+        </Console>
+
+        <!--
+            RewriteAppender:允许将日志事件传递给下一个appender处理前，对日志信息进行修改
+            使用场景：将日志中敏感的信息重写；例如账户密码等
+
+            Filter(element):过滤器
+            RewritePolicy(element):重写策略
+            AppenderRef(element):重写后交由哪些appders处理
+
+            name(attribute):appender名称
+            ignoreExceptions(attribute):忽略异常，默认true，设置false则将异常抛出给调用者处理
+        -->
+        <Rewrite name="Rewrite">
+            <LevelRangeFilter minLevel="ERROR" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <AppenderRef ref="Console" level="TRACE"/>
+            <!--
+               MapRewritePolicy:允许处理日志事件中MapMessage数据，在MapMessage基础上使用添加(Add)或更新(Update)方式
+
+               mode(attribute):	"Add"(将KeyValuePari中的数据覆盖MapMessage)
+                                "Update"(将存在MapMessage中的数据覆盖)
+
+               KeyValuePair(element):需要处理的键值对数组
+            -->
+            <MapRewritePolicy mode="Update">
+                <KeyValuePair key="product" value="TestProduct"/>
+                <KeyValuePair key="description" value="A Good Product"/>
+            </MapRewritePolicy>
+        </Rewrite>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="Rewrite"/>
+        </Root>
+    </Loggers>
+</Configuration>

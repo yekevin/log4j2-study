@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </Console>
+
+        <!--
+            ConsoleAppender:输出日志到System.out 或  System.err 默认为System.out
+
+            Filter(element):过滤器
+            Layout(element):日志格式化
+            RewritePolicy(element):重写策略
+            PurgePolicy(element):清除Appenders策略，用于停止并删除有Routing动态生成的Appender；
+                |-IdlePurgePolicy:log4j的唯一实现类
+                        |-timeToLive(attribute):存活时长
+                        |-checkInterval(attribute):检查周期(默认值为timeToLive)
+                        |-timeUnit(attribute):时间单位(默认值为TimeUnit.MINUTES)
+
+            Routes(element):包含一个或多个Appender供选择
+                |-pattern(element):支持所有的lookup查找；与Route的key属性匹配，用于选择路由；
+
+            Script(element):log4j启动时运行脚本，脚本返回一个路由KEY来确定默认的路由，如未定义，则使用默认Route(配置中Route未指定key可认为是默认的)
+
+            name(attribute):Appender名称
+            ignoreExceptions(attribute):忽略异常，默认true，设置false则将异常抛出给调用者处理
+        -->
+        <Routing name="RoutingAppender">
+            <Routes pattern="$${ctx:type}">
+                <!-- default Route -->
+                <Route>
+                    <RollingFile name="Rolling-${ctx:type}" fileName="target/${ctx:type}.log"
+                        filePattern="target/${ctx:type}.%i.log.gz">
+                        <PatternLayout>
+                            <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+                        </PatternLayout>
+                        <SizeBasedTriggeringPolicy size="500" />
+                    </RollingFile>
+                </Route>
+                <Route ref="Console" key="Console"/>
+            </Routes>
+            <IdlePurgePolicy timeToLive="15" timeUnit="minutes"/>
+        </Routing>
+    </Appenders>
+
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="RoutingAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--
+                配置方式：
+                1.index方式：${main:index} index对应arg的索引位置
+                2.K/V方式：MainArgs默认会将参数列表中前面一个座位K，后面一个作为V
+                例：args:-f file -n 100 ; lookupMap {-f:file,file:-n,-n:100,100:null}
+                TODO:K/V方式暂时未验证通过
+            -->
+            <PatternLayout header="File: ${main:1},${main:---file}">
+                <Pattern>%d{HH:mm:ss.SSS} %-5level %class{36} %L %M ${main:bar} - %msg%xEx%n</Pattern>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

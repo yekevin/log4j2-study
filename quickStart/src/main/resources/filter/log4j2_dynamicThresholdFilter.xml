@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    <!--
+    defaultThreshold:默认的日志级别
+    key:ThreadContext中使用put设置指定的key:value
+    KeyValuePair:KV对，支持过滤多个;key:ThreadContext中put的Value;value:日志级别
+    -->
+    <DynamicThresholdFilter key="name" defaultThreshold="ERROR"
+                            onMatch="ACCEPT" onMismatch="NEUTRAL">
+        <KeyValuePair key="Kevin" value="DEBUG"/>
+        <KeyValuePair key="Chris" value="INFO"/>
+    </DynamicThresholdFilter>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="ERROR">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

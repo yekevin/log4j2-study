@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error">
+    <StructuredDataFilter onMatch="ACCEPT" onMismatch="DENY" operator="or">
+        <!-- id id.name is same -->
+        <KeyValuePair key="id" value="10086"/>
+        <KeyValuePair key="id.name" value="10086"/>
+        <KeyValuePair key="type" value="transfer"/>
+        <KeyValuePair key="message" value='remain [10010 fromAccount="0000000000"] GOOD'/>
+        <KeyValuePair key="fromAccount" value="6225654321"/>
+
+    </StructuredDataFilter>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

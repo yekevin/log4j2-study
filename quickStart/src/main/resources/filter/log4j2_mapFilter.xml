@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    <!--
+        mapFilter:根据ThreadContext put的值进行校验
+        operator:or操作(满足配置中任何一个K/V即符合),默认不填则满足配置的所有K/V
+    -->
+    <MapFilter onMatch="ACCEPT" onMismatch="DENY" operator="or">
+        <KeyValuePair key="name" value="Kevin"/>
+        <KeyValuePair key="age" value="28"/>
+    </MapFilter>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+        <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+    </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="DEBUG">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

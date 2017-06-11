@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error">
+    <!--
+    Standard Level	intLevel
+    OFF	            0
+    FATAL	        100
+    ERROR	        200
+    WARN	        300
+    INFO	        400
+    DEBUG	        500
+    TRACE	        600
+    ALL	            Integer.MAX_VALUE
+    -->
+
+    <!--
+    配置文件方式：自定义日志级别
+    代码方式：Level.forName("DIAG",350);
+    生成类方式：java -cp log4j-core-2.8.2.jar org.apache.logging.log4j.core.tools.Generate$ExtendedLogger \
+        com.mycomp.ExtLogger DIAG=350 NOTICE=450 VERBOSE=550 > com/mycomp/ExtLogger.java
+    -->
+    <CustomLevels>
+        <CustomLevel name="DIAG" intLevel="350" />
+        <CustomLevel name="NOTICE" intLevel="450" />
+        <CustomLevel name="VERBOSE" intLevel="550" />
+    </CustomLevels>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </Console>
+        <File name="log" fileName="target/test.log" append="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="log"/>
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

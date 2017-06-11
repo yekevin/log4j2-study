@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error">
+    <Appenders>
+        <!--
+            ConsoleAppender:输出日志到System.out 或  System.err 默认为System.out
+
+            Filter(element):过滤器
+            Layout(element):日志格式化
+
+            name(attribute):Appender名称
+            ignoreExceptions(attribute):忽略异常，默认true，设置false则将异常抛出给调用者处理
+            follow(attribute):TODO
+            direct(attribute):TODO
+            target(attribute):"SYSTEM_OUT" 或 "SYSTEM_ERR". 默认 "SYSTEM_OUT".
+        -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <LevelRangeFilter minLevel="ERROR" maxLevel="TRACE" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="%d %p %c{1.} [%t] %L %m%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

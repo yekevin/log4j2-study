@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %p %c{1.} [%t] %L %m%n"/>
+        </Console>
+        <File name="MyFile" fileName="target/test.log" append="false">
+            <PatternLayout pattern="%d %p %c{1.} [%t] %m%n"/>
+        </File>
+        <File name="ErrorAppender" fileName="target/error.log" append="false">
+            <PatternLayout pattern="%d %p %c{1.} [%t] %m%n"/>
+        </File>
+
+        <!--
+            AsyncAppender接受多个Appender的引用，使用异步线程方式来处理日志
+            name(attribute):appender名称
+            blocking(attribute):队列满了，是否等待空闲队列，默认true，false为不等待并输出到errorRef
+            bufferSize(attribute):队列长度，默认128
+            errorRef(attribute):未匹配到有效的appender或队列满了，将输出到该处
+            ignoreExceptions(attribute):忽略异常，默认true，设置false则将异常抛出给调用者处理
+            includeLocation(attribute):是否包含行号，默认false
+            BlockingQueueFactory(element):阻塞队列工厂，使用工厂模式，如需自定义只要实现接口BlockingQueueFactory
+            filter(element):过滤器
+        -->
+        <Async name="Async" blocking="true" shutdownTimeout="0" bufferSize="128" errorRef="ErrorAppender" includeLocation="true">
+            <!--<LinkedTransferQueue/>-->
+            <LevelRangeFilter minLevel="ERROR" maxLevel="TRACE" onMatch="ACCEPT" onMismatch="DENY"/>
+            <AppenderRef ref="MyFile" level="WARN"/>
+            <AppenderRef ref="Console">
+                <!-- 进入真正appender前的一层过滤器 -->
+                <LevelRangeFilter minLevel="WARN" maxLevel="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            </AppenderRef>
+        </Async>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="Async"/>
+        </Root>
+    </Loggers>
+</Configuration>

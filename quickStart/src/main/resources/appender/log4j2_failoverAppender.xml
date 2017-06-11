@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error">
+    <Appenders>
+        <RollingFile name="RollingFile" fileName="target/test.log" filePattern="target/app-%d{MM-dd-yyyy}.log.gz"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <TimeBasedTriggeringPolicy />
+        </RollingFile>
+        <Console name="Console" target="SYSTEM_OUT" ignoreExceptions="false">
+            <PatternLayout pattern="%m%n"/>
+        </Console>
+        <!--
+            Failover:故障转移Appender，当primary appender失败，failovers appender集合按顺序尝试直到一个成功或没有可用的appender为止
+
+            Filter(element):过滤器
+            Failovers(element):备用的appender集合
+
+            name(attribute):Appender名称
+            ignoreExceptions(attribute):忽略异常，必须为false
+            retryIntervalSeconds(attribute):当故障转移后间隔X秒再将日志事件恢复给primary appender处理，默认60s
+        -->
+        <Failover name="Failover" primary="RollingFile" retryIntervalSeconds="10" ignoreExceptions="false">
+            <LevelRangeFilter minLevel="ERROR" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Failovers>
+                <AppenderRef ref="Console"/>
+            </Failovers>
+        </Failover>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="Failover"/>
+        </Root>
+    </Loggers>
+</Configuration>

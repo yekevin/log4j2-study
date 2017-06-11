@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--
+                取JAVA环境变量参数
+                配置方式：$${java:ENV_KEY}
+            -->
+            <PatternLayout header="${JAVA:runtime} - ${java:vm} - ${java:os}">
+                <Pattern>%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n</Pattern>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

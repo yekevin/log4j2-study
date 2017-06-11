@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <ContextMapFilter onMatch="ACCEPT" onMismatch="DENY" operator="or">
+                <KeyValuePair key="user" value="Administrator"/>
+                <KeyValuePair key="product" value="testProduct"/>
+            </ContextMapFilter>
+            <PatternLayout pattern="%m%n"/>
+        </Console>
+
+        <!--
+            RewriteAppender:允许将日志事件传递给下一个appender处理前，对日志信息进行修改
+            使用场景：将日志中敏感的信息重写；例如账户密码等
+
+            Filter(element):过滤器
+            RewritePolicy(element):重写策略
+            AppenderRef(element):重写后交由哪些appders处理
+
+            name(attribute):appender名称
+            ignoreExceptions(attribute):忽略异常，默认true，设置false则将异常抛出给调用者处理
+        -->
+        <Rewrite name="Rewrite">
+            <LevelRangeFilter minLevel="ERROR" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <AppenderRef ref="Console" level="TRACE"/>
+            <!--
+               PropertiesRewritePolicy:允许处理日志事件中ThreadContext Map数据，将Property中数组写入ThreadContext
+               与MapRewritePolicy区别:只有类似与"Add"的一种覆盖模式，可以用于解析变量；例如${sys:user.name}
+               Property(element):需要处理的Property数组，
+            -->
+            <PropertiesRewritePolicy>
+                <Property name="user">${sys:user.name}</Property>
+                <Property name="env">${sys:environment}</Property>
+            </PropertiesRewritePolicy>
+        </Rewrite>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="Rewrite"/>
+        </Root>
+    </Loggers>
+</Configuration>

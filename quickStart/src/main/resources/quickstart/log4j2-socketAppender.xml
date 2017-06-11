@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <Socket name="A1" host="localHost" port="5000">
+            <SerializedLayout/>
+        </Socket>
+    </appenders>
+    <loggers>
+        <logger name="me.apache.logging.log4j" level="INFO" additivity="false">
+            <appender-ref ref="A1"/>
+        </logger>
+
+        <root level="ERROR">
+            <appender-ref ref="Console"/>
+        </root>
+    </loggers>
+</configuration>

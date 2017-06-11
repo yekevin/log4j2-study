@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error">
+    <Appenders>
+        <!--
+            ConsoleAppender:输出日志到System.out 或  System.err 默认为System.out
+
+            Filter(element):过滤器
+            Layout(element):日志格式化
+
+            name(attribute):Appender名称
+            append(attribute):true则追加写文件，false则清空原有文件写入新的，默认为true
+            fileName(attribute):日志文件名，如果父类路径不存在也会自动创建
+            immediateFlush(attribute):即刻刷新磁盘，默认false,为true则每次写入即刻刷新磁盘,比较影响性能
+            regionLength(attribute):映射区域长度，取值范围256 and 1,073,741,824 (1 GB or 2^30)，默认32 MB
+            ignoreExceptions(attribute):忽略异常，默认true，设置false则将异常抛出给调用者处理
+            advertise(attribute): "true" if the appender configuration should be advertised, "false" otherwise.
+            advertiseURI(attribute): The advertised URI which can be used to retrieve the file contents.
+        -->
+        <MemoryMappedFile name="memoryMappedFileAppender" fileName="target/test.log">
+            <LevelRangeFilter minLevel="ERROR" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+        </MemoryMappedFile>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="memoryMappedFileAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>

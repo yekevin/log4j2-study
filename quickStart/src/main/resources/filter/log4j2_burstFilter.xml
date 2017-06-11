@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    <Appenders>
+        <RollingFile name="RollingFile" fileName="target/test.log"
+                     filePattern="target/app-%d{MM-dd-yyyy}.log.gz" append="false">
+            <!--
+                level:级别过滤
+                rate:速率过滤,每秒允许处理消息事件的数量
+                maxBurst:超出速率后,最大能处理的事件数量,默认为速率的10倍
+            -->
+            <BurstFilter level="INFO" rate="16" maxBurst="100"/>
+            <PatternLayout>
+                <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+            <TimeBasedTriggeringPolicy />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

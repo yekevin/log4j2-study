@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error">
+    <Appenders>
+        <!--
+            RollingFileAppender:滚动文件appender
+
+            Filter(element):过滤器
+            Layout(element):日志格式化
+            TriggeringPolicy(element):文件归档出发策略，决定什么情况执行
+            RolloverStrategy(element):文件滚动策略，决定文件滚动的位置，名称等
+
+            name(attribute):Appender名称
+            append(attribute):true则追加写文件，false则清空原有文件写入新的，默认为true
+            bufferedIO(attribute):是否开启缓冲，开启则等待缓冲区满后写入磁盘，默认为true
+            bufferSize(attribute):缓冲区大小，默认 8192 bytes.
+            createOnDemand(attribute):按需创建文件，true则等待日志通过了fiter路由到了appender则创建日志文件，默认false
+            fileName(attribute):日志文件名，如果父类路径不存在也会自动创建
+            filePattern(attribute):归档日志文件名模式
+            immediateFlush(attribute):即刻刷新磁盘，默认false,为true则每次写入即刻刷新磁盘,比较影响性能
+            locking(attribute):在多JVM共享读写同一个文件时使用，默认为false
+            ignoreExceptions(attribute):忽略异常，默认true，设置false则将异常抛出给调用者处理
+        -->
+        <RollingFile name="RollingFileAppender" fileName="target/test.log" append="false"
+                     filePattern="test-%d{yyyy-MM-dd-HH}-%i.log.gz">
+            <LevelRangeFilter minLevel="ERROR" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+
+            <!-- 组合触发策略，出发任何一个即可 -->
+            <Policies>
+                <!--
+                 OnStartupTriggeringPolicy:当日志文件比JVM启动时间戳更老并且文件大小超过指定则触发，默认为1 byte
+                 -->
+                <OnStartupTriggeringPolicy minSize="1024"/>
+                <!--
+                SizeBasedTriggeringPolicy:当日志文件达到设置的阀值则触发，可使用后缀KB, MB or GB指定单位，默认为byte
+                -->
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+                <!--
+                TimeBasedTriggeringPolicy:基于时间出发策略
+                    interval:出发周期(默认值1)单位根据filePattern匹配，上例精确到Hour，那么就是每隔1小时
+                    modulate:是否可调节(默认false)， interval = interval - (current(Hour|Date|...) % interval)
+                -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!--
+                    TODO
+                    定时调度触发策略
+                    evaluateOnStartup(attribute):check if the file should be rolled over immediately.
+                    schedule(attribute):cronExpression
+                -->
+                <CronTriggeringPolicy schedule="0 0 * * * ?"/>
+            </Policies>
+
+            <!--
+                DefaultRolloverStrategy:默认滚动策略;根据RollingFileAppender中filePattern属性定义生成滚动的文件名称，根据后缀名称确认压缩方式；
+                    1.date/time pattern(app-%d{yyyy-MM-dd}.log.gz)；
+                    2.integer pattern(app-%i.log.gz")；
+                    3.混合使用 test-%d{yyyy-MM-dd}-%i.log.gz
+                    上例为混合使用；integer会一直递增知道date/time pattern发生变化
+
+                min(attribute):文件滚动的最小值编号；默认值1
+                max(attribute):文件滚动的最大值编号；默认值7
+                compressionLevel(attribute):压缩级别 0 = none, 1 = best speed, through 9 = best compression.只有ZIP压缩的实现
+                fileIndex(attribute):文件索引顺序；默认值max
+                    min:新生成的文件使用最小编号，其他文件编号递增，超过max限制的数量的文件删除，再写入最新的文件；
+                    max:新生成的文件使用当前最大编号(当前有两个文件，那么编号为3)，超过max限制的数量后删除最小的文件，其他文件编号依次递减，再写入最新的文件；
+
+                Actions(element):滚动文件期间的一系列操作 TODO
+            -->
+            <DefaultRolloverStrategy min="0" max="10">
+
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="RollingFileAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>
