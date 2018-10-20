@@ -113,9 +113,9 @@
                 <version>2.5.3</version>
                 <configuration>
                     <!--git用户名-->
-                    <username>yepeilong@gmail.com</username>
+                    <username></username>
                     <!--git密码-->
-                    <password>yplgr3264582123</password>
+                    <password></password>
                     <!--mvn目标指令-->
                     <goals>-f pom.xml deploy</goals>
                 </configuration>
