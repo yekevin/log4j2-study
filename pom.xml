@@ -78,6 +78,21 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+	
+	<distributionManagement>
+        <!-- use the following if you're not using a snapshot version. -->
+        <repository>
+            <id>sz-releases</id>
+            <name>RepositoryProxyRel</name>
+            <url>http://127.0.0.1:8081/repository/maven-releases/</url>
+        </repository>
+        <!-- use the following if you ARE using a snapshot version. -->
+        <snapshotRepository>
+            <id>sz-snapshots</id>
+            <name>RepositoryProxySnap</name>
+            <url>http://127.0.0.1:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
         <plugins>
