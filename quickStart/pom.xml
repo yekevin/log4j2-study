@@ -44,4 +44,32 @@
             <artifactId>disruptor</artifactId>
         </dependency>
     </dependencies>
+	
+	<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+			<!-- 发布插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <!--git用户名-->
+                    <username>yepeilong@gmail.com</username>
+                    <!--git密码-->
+                    <password>yplgr3264582123</password>
+                    <!--mvn目标指令-->
+                    <goals>-f pom.xml deploy</goals>
+                </configuration>
+            </plugin>
+        </plugins>
 </project>
